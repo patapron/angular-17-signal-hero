@@ -1,0 +1,32 @@
+<div class="block px-10">
+  <div class="mt-2 px-5">
+      <input
+          #searchBox
+          class="block w-full rounded-md border-0 px-2 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-red-600 sm:text-sm sm:leading-6"
+          id="search-box"
+          type="text"
+          placeholder="Hero Search"
+          (input)="search(searchBox.value)"
+      />
+  </div>
+
+  @if (heroes().length) {
+      <ul
+          class="border-1 mt-2 divide-y divide-gray-200 rounded border border-gray-300 bg-white"
+          role="list"
+      >
+      @for (hero of heroes(); track hero.id; let first = $first; let last = $last) {
+          <li
+              class="flex py-4 hover:cursor-pointer hover:bg-gray-100"
+              routerLink="/detail/{{ hero.id }}"
+              [class.rounded-b]="last"
+              [class.rounded-t]="first"
+          >
+              <span class="px-2 py-0.5 text-sm font-medium text-gray-900">
+                  {{ hero.name }}
+              </span>
+          </li>
+      }
+      </ul>
+  }
+</div>
