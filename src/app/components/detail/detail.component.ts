@@ -1,5 +1,5 @@
 import { Component, OnInit, Signal, inject, input } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { Hero } from '@models/hero.interface';
 import { HeroService } from '@services/hero.service';
 
@@ -8,7 +8,7 @@ import { HeroService } from '@services/hero.service';
   standalone: true,
   imports: [RouterLink],
   templateUrl: './detail.component.html',
-  styleUrl: './detail.component.scss'
+  styleUrl: './detail.component.scss',
 })
 export default class DetailComponent implements OnInit {
   heroId = input<number>(0, { alias: 'id' }); // @Input({ alias: 'id}' }) productId!: number;
@@ -16,15 +16,20 @@ export default class DetailComponent implements OnInit {
 
   private readonly heroService = inject(HeroService);
 
+  constructor(private router: Router) {}
+
   ngOnInit(): void {
-    console.log("detail: ", this.heroId())
     this.hero = this.heroService.getHeroById(this.heroId());
   }
 
   onDelete(hero: Hero | undefined) {
-    console.log("ondelete")
-    if(hero){
-      this.heroService.deleteHero(hero.id)
+    if (hero) {
+      this.heroService.deleteHero(hero.id);
+      this.router.navigate(['/works']);
     }
+  }
+
+  onEdit(hero: Hero | undefined) {
+    this.router.navigate(['/edit/'+ hero!.id]);
   }
 }

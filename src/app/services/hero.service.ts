@@ -55,21 +55,25 @@ export class HeroService {
   }
 
   addHero(hero: Hero) {
-    console.log("add")
-    this._http.post<Hero>(this._endpoint, hero, this._httpOptions).pipe(
-      tap((hero) =>{
-        console.log("added: ", hero)
-       this.getHeroes()
-      } ),
-    ).subscribe();
+    this._http
+      .post<Hero>(this._endpoint, hero, this._httpOptions)
+      .pipe(
+        tap((hero) => {
+          this.getHeroes();
+        })
+      )
+      .subscribe();
   }
 
-  deleteHero(id: number): Observable<Hero> {
-    const url = `${this._endpoint}/${id}`;
-
-    return this._http
-      .delete<Hero>(url, this._httpOptions)
-      .pipe(catchError(this.handleError<Hero>('deleteHero')));
+  deleteHero(id: number) {
+    this._http
+      .delete<Hero>(`${this._endpoint}/${id}`, this._httpOptions)
+      .pipe(
+        tap((hero) => {
+          this.getHeroes();
+        })
+      )
+      .subscribe();
   }
 
   updateHero(hero: Hero): Observable<any> {
